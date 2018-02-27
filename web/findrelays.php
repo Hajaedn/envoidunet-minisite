@@ -23,7 +23,9 @@ try {
         echo $message."\n";
     }
 
-    return $result;
+    $relays = isset($result['response']->relays) ? $result['response']->relays : [];
+
+    echo json_encode($relays, JSON_PRETTY_PRINT);
 
 } catch (SoapFault $e) {
     echo $e->getMessage()."\n";
