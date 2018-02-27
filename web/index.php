@@ -1,6 +1,6 @@
 <?php
 require_once 'config.php';
-include 'header.php';
+//include 'header.php';
 ?>
 <html>
     <head>
@@ -69,28 +69,31 @@ echo $e->getMessage()."\n";
 
 
     foreach ($result['response']->quotes as $carrier) {
-        $carriers->service = $carrier->service_name;
+//        $carriers->service = $carrier->service_name;
         $carriers->carrier = $carrier;
-        $carriers->name = $carrier->carrier_name;
-        $carriers->price = $carrier->price;
-        $carriers->base_price = $carrier->base_price;
-        $carriers->fuel = $carrier->fuel;
+//        $carriers->name = $carrier->carrier_name;
+//        $carriers->price = $carrier->price;
+//        $carriers->base_price = $carrier->base_price;
+//        $carriers->fuel = $carrier->fuel;
         $carriers->fuel_rate = $carrier->fuel_rate;
+
         $carriers->security = $carrier->security;
         $carriers->vat = $carrier->vat;
-        $carriers->description = $carrier->carrier_description;
-        $carriers->image = $carrier->carrier_logo
+//        $carriers->description = $carrier->carrier_description;
+
 ?>
 <fieldset>
-    <legend><img src="<?php echo $carriers->image; ?>" class="imageGauche" alt="<?php echo $carriers->name; ?>" /></legend>
-    <!--        <b>Nom :  </b><a>--><?php echo $carriers->name; ?><!--</a>-->
-    <b>Service : </b><a><?php echo $carriers->service; ?></a>
-    <b>Prix : </b><a><?php echo $carriers->price; ?></a>
-    <b>Prix de base : </b><a><?php echo $carriers->base_price; ?></a>
-    <b>Fuel : </b><a><?php echo $carriers->fuel; ?></a><br>
-    <?php echo $carriers->description; ?>
+    <legend><img src="<?php echo $carrier->carrier_logo; ?>" class="imageGauche" alt="<?php echo $carrier->carrier_name; ?>" /></legend>
+    <!--        <b>Nom :  </b><a>--><?php echo $carrier->carrier_name; ?><!--</a>-->
+    <b>Service : </b><a><?php echo $carrier->service_name; ?></a>
+    <a> <?php echo $carrier->carrier_description; ?></a><br>
+    <b>Prix : </b><a><?php echo $carrier->price; ?></a>
+    <b>( Prix de base : </b><a><?php echo $carrier->base_price; ?></a>
+    <b> + Fuel : </b><a><?php echo $carrier->fuel; ?></a>
+    <b> + Security : </b><a><?php echo (isset($carrier->security) ? $carrier->security : "0"); ?></a>
+    <b>)</b>
 
-    <p>Choisir ce transporteur <a href="findrelays.php?pcode=06200&city=Nice&country=FR">Cliquer ici</a><br></p>
+    / Choisir ce transporteur <a href="findrelays.php?pcode=06200&city=Nice&country=FR&carrier= . $carrier->carrier">Cliquer ici</a><br>
 </fieldset><br>
 
 <?php
