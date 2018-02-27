@@ -6,10 +6,11 @@
     window.envoidunet_init_map = function () {
         $('#envoidunetMap').css('display', 'block');
         // set offset on the middle of the page (or top of the page for small screens)
-        var offset = $(window).scrollTop() + ($(window).height() - $('#envoidunetMap').height()) / 2;
+        var offset = $(window).scrollTop() + (window.innerHeight - $('#envoidunetMap').height()) / 2;
         if (offset < $(window).scrollTop()) {
             offset = $(window).scrollTop();
         }
+
         $('#envoidunetMap').css('top', offset + 'px');
         var options = {
             zoom: 11,
