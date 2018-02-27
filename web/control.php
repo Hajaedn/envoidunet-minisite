@@ -1,5 +1,7 @@
 <?php
 
+require_once 'config.php';
+
 $toPostcode= $_POST['toPostcode'];
 $toCity= $_POST['toCity'];
 $toCountry= $_POST['toCountry'];
@@ -12,8 +14,8 @@ $client = new SoapClient('http://api.envoidunet.com/?wsdl');
 
 
 $login = new stdClass();
-$login->api_account = KEY_ACCOUNT;
-$login->api_key = KEY_API;
+$login->api_account = $config['api_account'];
+$login->api_key = $config['api_key'];
 
 
 $params = new stdClass();
