@@ -1,6 +1,6 @@
 <?php
 
-return [
+return $config = [
     'api_account' => 'bad',
     'api_key' => 'bad'
 ];
