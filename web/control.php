@@ -49,11 +49,13 @@ try {
 
 }
 
+?>
+<h1>Liste des Transporteurs</h1>
+<?php
+//var_dump($result['response']->quotes);die();
 
-var_dump($result['response']->quotes);die();
-
-$carriers = [];
-foreach ($result['response']->quotes->item as $carrier) {
+//$carriers = [];
+foreach ($result['response']->quotes as $carrier) {
     $carriers->service = $carrier->service_name;
     $carriers->name = $carrier->carrier_name;
     $carriers->price = $carrier->price;
@@ -62,9 +64,19 @@ foreach ($result['response']->quotes->item as $carrier) {
     $carriers->fuel_rate = $carrier->fuel_rate;
     $carriers->security = $carrier->security;
     $carriers->vat = $carrier->vat;
+?>
+    <fieldset>
+        <legend>Transporteur</legend>
+        <b>Nom :  </b><a><?php echo $carriers->name; ?></a> <br>
+        <b>Service : </b><a><?php echo $carriers->service; ?></a><br>
+        <b>Prix : </b><a><?php echo $carriers->price; ?></a>
+        <b>Prix de base : </b><a><?php echo $carriers->base_price; ?></a>
+        <b>Fuel : </b><a><?php echo $carriers->fuel; ?></a>
+    </fieldset><br>
+<?php
 }
 
-var_dump($carriers[]);die();
+var_dump($carriers);die();
 
 
 ?>
