@@ -6,6 +6,7 @@ require_once 'config.php';
     <head>
         <meta charset="utf-8" />
         <title>Envoi du net</title>
+        <link rel="stylesheet" type="text/css" href="assets/css/front/style.css">
     </head>
     <h2>Destination</h2>
     <body>
@@ -65,8 +66,6 @@ echo $e->getMessage()."\n";
 ?>
 <h1>Liste des Transporteurs</h1>
 <?php
-//var_dump($result['response']->quotes);die();
-
 
     foreach ($result['response']->quotes as $carrier) {
 //        $carriers->service = $carrier->service_name;
@@ -84,7 +83,6 @@ echo $e->getMessage()."\n";
 ?>
 <fieldset>
     <legend><img src="<?php echo $carrier->carrier_logo; ?>" class="imageGauche" alt="<?php echo $carrier->carrier_name; ?>" /></legend>
-    <!--        <b>Nom :  </b><a>--><?php echo $carrier->carrier_name; ?><!--</a>-->
     <b>Service : </b><a><?php echo $carrier->service_name; ?></a>
     <a> <?php echo $carrier->carrier_description; ?></a><br>
     <b>Prix : </b><a><?php echo $carrier->price; ?></a>
@@ -92,12 +90,111 @@ echo $e->getMessage()."\n";
     <b> + Fuel : </b><a><?php echo $carrier->fuel; ?></a>
     <b> + Security : </b><a><?php echo (isset($carrier->security) ? $carrier->security : "0"); ?></a>
     <b>)</b>
+    <span><?php echo $carrier->carrier_name; ?></span>
+    <br/>
 
-    / Choisir ce transporteur <a href="findrelays.php?pcode=06200&city=Nice&country=FR&carrier= . $carrier->carrier">Cliquer ici</a><br>
+    <!--  Used to recover relays  -->
+    <span class="edn-info" data-relay=<?php echo ($carrier->service === 'relay' ? 'true' : 'false'); ?> data-carrier="<?php echo $carrier->carrier; ?>" data-carrier-name="<?php echo $carrier->carrier_name; ?>"></span>
+    <span class="envoidunet-select-parcel" id="<?php echo 'parcel_' . $carrier->carrier; ?>">Choose a relay</span>
+    <br/>
+    <span>Selected : <span id="envoidunet-parcel-client"></span></span>
+
+    <br>
 </fieldset><br>
 
 <?php
     }
-    include 'footer.php';
 ?>
 
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+<script>
+    var envoidunet_lang = {
+        'relayName' : {
+            'mondialrelay' :'Mondial Relay',
+            'dpd_relay' :'DPD Relay',
+            'chronorelais' : 'Chronopost Relais',
+            'ups_express_saver_relay' : 'Ups Express Saver Relay',
+            'ups_standard_mono_relay' : 'Ups Standard Monocolis Relay',
+            'ups_standard_multi_relay' : 'Ups Standard Multicolis Relay',
+            'colissimo_relais' : 'Colissimo Relais'
+        },
+        'Opening hours' : 'Heures d\'ouverture',
+        'day_1' : 'lundi',
+        'day_2' : 'mardi',
+        'day_3' : 'mercredi',
+        'day_4' : 'jeudi',
+        'day_5' : 'vendredi',
+        'day_6' : 'samedi',
+        'day_7' : 'dimanche'
+    };
+
+    var envoidunet_parcels = null;
+    var infowindow = null;
+    var carrier_code = '';
+    var map = null;
+    var bounds = null;
+    var markers = [];
+    var parcels_info = [];
+    var envoidunet_plugin_url = '';
+
+    var envoidunet_map_container = '<div id="envoidunetMap">\n' +
+        '    <div id="envoidunetMapInner">\n' +
+        '        <div class="envoidunetClose" title="Close map"></div>\n' +
+        '        <div id="envoidunetMapContainer">\n' +
+        '            <div id="envoidunetMapCanvas"></div>\n' +
+        '        </div>\n' +
+        '        <div id="envoidunetPrContainer"></div>\n' +
+        '    </div>\n' +
+        '</div>\n';
+
+    var envoidunet_ajaxurl = 'findrelays.php';
+
+    $(document).ready(function () {
+
+        // see function load_relay_js in class envoidunet
+        $('body').append(envoidunet_map_container);
+
+        // close map if selected carrier is changed and remove parcel point selection
+        $('body').delegate('input.shipping_method', 'change', function () {
+            envoidunet_close_map();
+            $('input[name="_envoidunet_relay"]').remove();
+        });
+
+        $('body').delegate('.envoidunet-select-parcel', 'click', function () {
+            carrier_code = $(this).attr('id').replace('parcel_', '');
+            envoidunet_show_map(carrier_code, '06200', 'Nice', 'FR');
+        });
+
+        $('body').delegate('input.shipping_method', 'change', function () {
+            var info = $('label[for="'+$(this).attr('id')+'"] .edn-info');
+            if ($(this).is(':checked') && info.length > 0 && $(info).data('relay')) {
+                carrier_code = $(info).data('carrier');
+                envoidunet_show_map(carrier_code);
+            }
+        });
+
+        // Show the map if a shipping method is already selected
+        var checked = $('input.shipping_method:checked');
+        if (checked.length > 0) {
+            var info = $('label[for="'+$(checked).attr('id')+'"] .edn-info');
+            if (info.length > 0 && $(info).data('relay')) {
+                carrier_code = $(info).data('carrier');
+                envoidunet_show_map(carrier_code);
+            }
+        }
+
+        $('#envoidunetMap').delegate('.parcelButton', 'click', function (e) {
+            e.preventDefault();
+            envoidunet_select_relay($(this).attr("data"));
+        });
+
+        $('.envoidunetClose').click(envoidunet_close_map);
+    });
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLaRQHgBQDiHVKMCk_3GPM6Q1gmNQ4E-U"></script>
+<script src="assets/js/front/relays.js"></script>

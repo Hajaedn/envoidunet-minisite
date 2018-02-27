@@ -1,87 +1,9 @@
 (function($) {
 
-    var envoidunet_lang = {
-        'relayName' : {
-            'mondialrelay' :'Mondial Relay',
-            'dpd_relay' :'DPD Relay'
-        },
-        'Opening hours' : 'Heures d\'ouverture',
-        'day_1' : 'lundi',
-        'day_2' : 'mardi',
-        'day_3' : 'mercredi',
-        'day_4' : 'jeudi',
-        'day_5' : 'vendredi',
-        'day_6' : 'samedi',
-        'day_7' : 'dimanche'
-    };
-
-    var envoidunet_parcels = null;
-    var infowindow = null;
-    var carrier_code = '';
-    var map = null;
-    var bounds = null;
-    var markers = [];
-    var parcels_info = [];
-    var envoidunet_plugin_url = '';
-
-    var envoidunet_map_container = '<div id="envoidunetMap">\n' +
-        '    <div id="envoidunetMapInner">\n' +
-        '        <div class="envoidunetClose" title="Close map"></div>\n' +
-        '        <div id="envoidunetMapContainer">\n' +
-        '            <div id="envoidunetMapCanvas"></div>\n' +
-        '        </div>\n' +
-        '        <div id="envoidunetPrContainer"></div>\n' +
-        '    </div>\n' +
-        '</div>\n';
-
-    var envoidunet_ajaxurl = 'findrelays.php';
-
-    $(window).load(function () {
-
-        // see function load_relay_js in class envoidunet
-        $('body').append(envoidunet_map_container);
-
-        // close map if selected carrier is changed and remove parcel point selection
-        $('body').delegate('input.shipping_method', 'change', function () {
-            envoidunet_close_map();
-            $('input[name="_envoidunet_relay"]').remove();
-        });
-
-        $('body').delegate('.envoidunet-select-parcel', 'click', function () {
-            carrier_code = $(this).attr('id').replace('parcel_', '');
-            envoidunet_show_map(carrier_code);
-        });
-
-        $('body').delegate('input.shipping_method', 'change', function () {
-            var info = $('label[for="'+$(this).attr('id')+'"] .edn-info');
-            if ($(this).is(':checked') && info.length > 0 && $(info).data('relay')) {
-                carrier_code = $(info).data('carrier');
-                envoidunet_show_map(carrier_code);
-            }
-        });
-
-        // Show the map if a shipping method is already selected
-        var checked = $('input.shipping_method:checked');
-        if (checked.length > 0) {
-            var info = $('label[for="'+$(checked).attr('id')+'"] .edn-info');
-            if (info.length > 0 && $(info).data('relay')) {
-                carrier_code = $(info).data('carrier');
-                envoidunet_show_map(carrier_code);
-            }
-        }
-
-        $('#envoidunetMap').delegate('.parcelButton', 'click', function (e) {
-            e.preventDefault();
-            envoidunet_select_relay($(this).attr("data"));
-        });
-
-        $('.envoidunetClose').click(envoidunet_close_map);
-    });
-
     /*
      * Initialize the google map for a new display
      */
-    function envoidunet_init_map() {
+    window.envoidunet_init_map = function () {
         $('#envoidunetMap').css('display', 'block');
         // set offset on the middle of the page (or top of the page for small screens)
         var offset = $(window).scrollTop() + ($(window).height() - $('#envoidunetMap').height()) / 2;
@@ -103,11 +25,11 @@
         google.maps.event.trigger(map, 'resize');
     }
 
-    function envoidunet_show_map(carrier_code) {
+    window.envoidunet_show_map =function (carrier_code, postcode, city, country) {
         envoidunet_init_map();
         $.ajax({
             url: envoidunet_ajaxurl,
-            data: {action: 'envoidunet_find_relays', carrier_code: carrier_code},
+            data: {action: 'envoidunet_find_relays', carrier_code: carrier_code, postcode: postcode, city: city, country: country},
             dataType: 'json',
             timeout: 15000,
             error: envoidunet_error_relays,
@@ -121,7 +43,7 @@
     /*
      * Close and clear the google map
      */
-    function envoidunet_close_map() {
+    window.envoidunet_close_map = function () {
         $('#envoidunetMap').css('display', 'none');
         $('#envoidunetPrContainer').html('');
         for (var i = 0; i < markers.length; i++) {
@@ -134,7 +56,7 @@
     /*
      * We update the zoom level to the best fit
      */
-    function envoidunet_update_zoom_map() {
+    window.envoidunet_update_zoom_map = function () {
         // zoom only if we have all markers
         if (envoidunet_parcels.length === 0 || (envoidunet_parcels.length !== 0 && markers.length < envoidunet_parcels.length)) {
             return;
@@ -162,7 +84,7 @@
     /*
      * Add google map events on a marker
      */
-    function envoidunet_add_google_map_events(marker, code) {
+    window.envoidunet_add_google_map_events = function (marker, code) {
         // open popup on map click
         google.maps.event.addListener(marker, "click", function () {
             if (typeof openedWindow != 'undefined' && openedWindow !== null) {
@@ -186,7 +108,7 @@
     /*
      * Now that we have all the parcel points, we display them
      */
-    function envoidunet_show_relays(relays) {
+    window.envoidunet_show_relays = function (relays) {
         envoidunet_parcels = relays;
 
         if (relays.length === 0) {
@@ -291,7 +213,7 @@
     /*
      * We clicked on the "choose this relay point" link on the map popup
      */
-    function envoidunet_select_relay(pointCode) {
+    window.envoidunet_select_relay = function (pointCode) {
         var point;
         $.each(envoidunet_parcels, function (index, el) {
             if (el.relay_id == pointCode) {
@@ -309,12 +231,12 @@
         envoidunet_close_map();
     }
 
-    function envoidunet_error_relays(jqXHR, textStatus, errorThrown) {
+    window.envoidunet_error_relays = function (jqXHR, textStatus, errorThrown) {
         alert(envoidunet_lang['Unable to load relay points'] + ' : ' + errorThrown);
     }
 
     /* from 12:00:00 to 12:00 */
-    function envoidunet_formatHours(time) {
+    window.envoidunet_formatHours = function (time) {
         var explode = time.split(':');
         if (explode.length == 3) {
             time = explode[0] + ':' + explode[1];

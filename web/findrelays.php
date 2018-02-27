@@ -9,10 +9,10 @@ $login->api_account = $config['api_account'];
 $login->api_key = $config['api_key'];
 
 $params = new stdClass();
-$params->carrier = 'dpd_relay';
-$params->postcode = '06700';
-$params->city = 'Saint Laurent du Var';
-$params->country = 'FR';
+$params->carrier = $_GET['carrier_code'];
+$params->postcode = $_GET['postcode'];
+$params->city = $_GET['city'];
+$params->country = $_GET['country'];
 
 try {
     $result = $client->findRelays($login, $params);
