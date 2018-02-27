@@ -1,0 +1,19 @@
+server {
+	root /var/www/web;
+	index index.php;
+  try_files $uri $uri/ /index.php?$query_string;
+
+  client_max_body_size 20M;
+
+	location ~ /\. {
+		deny all;
+	}
+
+	location ~ \.php$ {
+    try_files $uri =404;
+		fastcgi_pass unix:/var/run/php5-fpm.sock;
+		fastcgi_read_timeout 120;
+		include fastcgi_params;
+    fastcgi_param SERVER_NAME $http_host;
+	}
+}

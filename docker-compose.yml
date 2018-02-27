@@ -1,0 +1,18 @@
+version: '2'
+services:
+  web:
+    build: build/web
+    ports:
+     - 80
+    volumes:
+     - .:/var/www
+    environment:
+     - VIRTUAL_HOST=ednminisite.localhost
+    hostname: ednminisite.localhost
+    networks:
+     - default
+networks:
+  default:
+    external:
+      name: commondev
+
