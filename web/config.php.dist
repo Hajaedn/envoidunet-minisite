@@ -1,0 +1,6 @@
+<?php
+
+return [
+    'api_account' => 'bad',
+    'api_key' => 'bad'
+];
