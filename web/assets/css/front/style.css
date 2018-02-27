@@ -1,0 +1,216 @@
+.clear{
+	clear:both;
+}
+.nobr{
+	white-space:nowrap;
+}
+
+.shipping .carrier_logo img{
+	width:100px;
+	padding-left:10px;
+	padding-right:10px;
+}
+.shipping .description, .shipping .delivery_date{
+	font-size:0.9em;
+}
+.shipping .envoidunet-select-parcel{
+	cursor:pointer;
+	text-decoration:underline;
+}
+.shipping .envoidunet-select-parcel:hover{
+	color:grey;
+	text-decoration:none;
+}
+/* map */
+#envoidunetMap {
+    width:80%;
+    max-width:1200px;
+    height:auto;
+    display:none;
+    position: absolute;
+    top:100px;
+    padding:10px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    z-index:11111;
+    background: #f9f9f9;
+    box-shadow:3px 3px 30px rgba(0, 0, 0, 0.4), 3px 3px 30px rgba(0, 0, 0, 0.4);
+}
+#envoidunetMapInner {
+    background: #ffffff;
+}
+#envoidunetMap .envoidunetClose {
+    background-image: url("../../img/icon-close.png");
+    height:40px;
+    width:40px;
+    cursor:pointer;
+    top:-20px;
+    right:-20px;
+    position:absolute;
+    z-index: 11222;
+}
+#envoidunetMap #envoidunetMapContainer {
+    float:left;
+    width:100%;
+    padding-right:268px;
+    box-sizing:border-box;
+}
+#envoidunetMap #envoidunetPrContainer {
+    overflow-y:scroll;
+    height:500px;
+    padding:0px 10px;
+    width: 268px;
+    margin-left:-268px;
+    float:right;
+    box-sizing:border-box;
+    font-family:Roboto, Arial, sans-serif;
+}
+#envoidunetMap #envoidunetPrContainer table{
+    border:0;
+}
+#envoidunetMap #envoidunetPrContainer td {
+    border-top: 1px solid #dddddd;
+    padding: 9px 10px;
+    text-align:left;
+    color: #777;
+    font-size:13px;
+    line-height:20px;
+    border-right-width:0;
+    border-bottom-width:0;
+}
+#envoidunetMap #envoidunetPrContainer td a {
+    color: #337ab7;
+}
+#envoidunetMap #envoidunetPrContainer td a:hover {
+    text-decoration:none;
+}
+#envoidunetMap #envoidunetMapCanvas {
+    overflow:hidden;
+    height:500px;
+}
+#envoidunetMap .envoidunetMarker {
+    max-height:30px;
+    margin-right:5px;
+    vertical-align:middle;
+}
+#envoidunetMap .envoidunetPointTitle {
+    text-overflow:ellipsis;
+    overflow:hidden;
+    white-space:nowrap;
+    width:180px;
+    display:inline-block;
+    vertical-align:middle;
+}
+#envoidunetMap .envoidunetMakerPopup {
+    width:250px;
+    color:#777777;
+    line-height:20px;
+}
+#envoidunetMap a:hover {
+    text-decoration:none;
+}
+#envoidunetMap .envoidunetSchedule {
+    font-size:11px;
+}
+.envoidunetPointer {
+    cursor: pointer;
+}
+#envoidunetMap .parcelButton {
+    width: 190px;
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    color: #ffffff !important;
+    background-color: #5bc0de;
+    border: 1px solid #46b8da;
+    display:inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align:center;
+    vertical-align:middle;
+}
+
+#envoidunetMap .envoidunetDay {
+    width:60px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* override for mobile */
+@media (max-width: 767px) {
+    #envoidunetMap {
+        width:90%;
+        height:90%;
+    }
+    #envoidunetMapInner {
+        height:100%;
+    }
+    #envoidunetMap #envoidunetPrContainer {
+        display:none;
+    }
+    #envoidunetMap #envoidunetMapContainer {
+        padding-right:0px;
+        height:100%;
+    }
+    #envoidunetMap #envoidunetMapCanvas {
+        height:100%;
+    }
+    .envoidunetListPoints {
+        min-width:110px;
+    }
+    .envoidunetListPoints .envoidunetMobile{
+      display:inline;
+    }
+    .envoidunetListPoints .envoidunetDesktop{
+      display:none;
+    }
+    .envoidunetListPointsContainer {
+        display:none;
+    }
+    .envoidunetListPoints .envoidunetPointTitle {
+        text-overflow:ellipsis;
+        overflow:hidden;
+        white-space:nowrap;
+        width:100px;
+        display:inline-block;
+        vertical-align:middle;
+    }
+    #order .delivery_option > div > table.resume td.delivery_option_logo, #order-opc .delivery_option > div > table.resume td.delivery_option_logo {
+        width: auto;
+        padding-left:5px;
+        padding-right:5px;
+    }
+}
+@media (max-width: 470px) {
+    .envoidunetListPoints {
+        min-width:95px;
+    }
+    #order .delivery_option > div > table.resume td, #order-opc .delivery_option > div > table.resume td {
+        font-size:0.9em;
+    }
+    .envoidunetListPoints .envoidunetPointTitle {
+        width:85px;
+    }
+    td.delivery_option_logo img {
+        max-width: 45px;
+        max-height: 50px;
+    }
+}
+@media (max-width: 360px) {
+    .envoidunetListPoints {
+        min-width:80px;
+    }
+    #order .delivery_option > div > table.resume td, #order-opc .delivery_option > div > table.resume td {
+        font-size:0.8em;
+    }
+    .envoidunetListPoints .envoidunetPointTitle {
+        width:70px;
+    }
+    td.delivery_option_logo img {
+        max-width: 40px;
+        max-height: 50px;
+    }
+}
