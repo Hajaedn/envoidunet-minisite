@@ -1,5 +1,4 @@
 <?php
-require_once 'config.php';
 //include 'header.php';
 ?>
 <html>
@@ -8,114 +7,29 @@ require_once 'config.php';
         <title>Envoi du net</title>
         <link rel="stylesheet" type="text/css" href="assets/css/front/style.css">
     </head>
-    <h2>Destination</h2>
+    <h1>Liste des Transporteurs</h1>
     <body>
         <form method="POST" action="index.php">
             06700 / Saint Laurent du Var / FR<br>
-            <img src="assets/img/carriers/logo-chrp.png" class="imageGauche" alt=" " />
-            <img src="assets/img/carriers/logo-dhle.png" class="imageGauche" alt=" " />
-            <img src="assets/img/carriers/logo-copr.png" class="imageGauche" alt=" " />
-            <img src="assets/img/carriers/logo-fedx.png" class="imageGauche" alt=" " />
-            <img src="http://envoidunet.com/assets/img/transporteurs/api/chronorelais.jpg" class="imageGauche" alt=" " />
-            <input type="hidden" id="toPostcode" name="toPostcode" type="text" >
-            <input type="hidden" id="toCity"     name="toCity"     type="text" >
-            <input type="hidden" id="toCountry"  name="toCountry"  type="text" >
+            <fieldset><img src="assets/img/carriers/logo-dhle.png" class="imageGauche" alt=" " />DHL Domestic Express<br></fieldset>
+
+            <fieldset><img src="assets/img/carriers/logo-copr.png" class="imageGauche" alt=" " />Colis Privé</fieldset>
+
+            <fieldset><img src="http://envoidunet.com/assets/img/transporteurs/api/laposte.png" class="imageGauche" alt=" " />Colissimo Relais
+            <span class="edn-info" data-relay= 'true' data-carrier="colissimo_relais" data-carrier-name="Colissimo Relais"></span>
+            <span class="envoidunet-select-parcel" id="parcel_colissimo_relais">Choose a relay</span>
+            <span>Selected : <span id="envoidunet-parcel-client"></span></span></fieldset>
+
+            <fieldset><img src="assets/img/carriers/logo-fedx.png" class="imageGauche" alt=" " />Lettre Max</fieldset>
+
+            <fieldset><img src="http://envoidunet.com/assets/img/transporteurs/api/chronorelais.jpg" class="imageGauche" alt=" " />Chrono Relais
+            <span class="edn-info" data-relay= 'true' data-carrier="chronorelais" data-carrier-name="Chrono Relais"></span>
+            <span class="envoidunet-select-parcel" id="parcel_chronorelais">Choose a relay</span>
+            <span>Selected : <span id="envoidunet-parcel-client"></span></span></fieldset>
             <input type="submit"  value="Valider" />
         </form><br>
     </body>
 </html>
-<?php
-
-
-$client = new SoapClient('http://api.envoidunet.com/?wsdl');
-
-$login = new stdClass();
-$login->api_account = $config['api_account'];
-$login->api_key = $config['api_key'];
-
-
-$params = new stdClass();
-$params->carrier = 'fedex';
-
-
-$params->from = new stdClass();
-$params->from->postcode = '06700';
-$params->from->city = 'Saint Laurent du Var';
-$params->from->country = 'FR';
-
-$params->to = new stdClass();
-$params->to->postcode = '06700';
-$params->to->city = 'Saint Laurent du var';
-$params->to->country = 'FR';
-//$params->to->postcode = '10115';
-//$params->to->city = 'Berlin';
-//$params->to->country = 'DE';
-
-$params->weight = 1;
-
-
-try {
-$result = $client->getQuote($login, $params);
-if ($result['error']->error_id > 0) {
-$error = $result['error'];
-$message = $error->error_message;
-$message .= isset($error->error_description) ? ' ('.$error->error_description.')' : '';
-echo $message."\n";
-}
-
-} catch (SoapFault $e) {
-echo $e->getMessage()."\n";
-
-}
-
-?>
-<h1>Liste des Transporteurs</h1>
-<?php
-
-    foreach ($result['response']->quotes as $carrier) {
-//        $carriers->service = $carrier->service_name;
-        $carriers->carrier = $carrier;
-//        $carriers->name = $carrier->carrier_name;
-//        $carriers->price = $carrier->price;
-//        $carriers->base_price = $carrier->base_price;
-//        $carriers->fuel = $carrier->fuel;
-        $carriers->fuel_rate = $carrier->fuel_rate;
-        if(isset($carrier->security)) {
-            $val_security = $carrier->security;
-        } else {
-            $val_security = '0';
-        }
-        $carriers->vat = $carrier->vat;
-//        $carriers->description = $carrier->carrier_description;
-
-?>
-<fieldset>
-    <legend><img src="<?php echo $carrier->carrier_logo; ?>" class="imageGauche" alt="<?php echo $carrier->carrier_name; ?>" /></legend>
-    <b>Carrier : </b><?php echo $carrier->carrier_name . ' (' . $carrier->carrier . ')'; ?>
-    <b>Service : </b><a><?php echo $carrier->service_name . ' / ' . $carrier->carrier_description; ?></a><br>
-    <b>Prix : </b><a><?php echo $carrier->price; ?></a>
-    <b>( Prix de base : </b><a><?php echo $carrier->base_price; ?></a>
-    <b> + Fuel : </b><a><?php echo $carrier->fuel; ?></a>
-    <b> + Security : </b><a><?php echo $val_security; ?></a>
-    <b>)</b>
-    <br/>
-<?php
-    if($carrier->service=='relay' && $carrier->carrier!== 'kiala') {
-?>
-    <!--  Used to recover relays  -->
-    <span class="edn-info" data-relay= 'true' data-carrier="<?php echo $carrier->carrier; ?>" data-carrier-name="<?php echo $carrier->carrier_name; ?>"></span>
-    <span class="envoidunet-select-parcel" id="<?php echo 'parcel_' . $carrier->carrier; ?>">Choose a relay</span>
-    <br/>
-    <span>Selected : <span id="envoidunet-parcel-client"></span></span>
-
-<?php
-    }
-?>
-</fieldset><br>
-
-<?php
-    }
-?>
 
 <script
         src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -145,9 +59,18 @@ echo $e->getMessage()."\n";
     };
 
     var carrier_code = '';
-    var postcode = '<?php echo $params->to->postcode;?>';
-    var city = '<?php echo $params->to->city;?>';
-    var country = '<?php echo $params->to->country;?>';
+    var postcode = '06700';
+    var city = 'Saint Laurent du var';
+    var country = 'FR';
+
+
+    var envoidunet_parcels = null;
+    var infowindow = null;
+    var map = null;
+    var bounds = null;
+    var markers = [];
+    var parcels_info = [];
+    var envoidunet_plugin_url = '';
 
     var envoidunet_map_container = '<div id="envoidunetMap">\n' +
         '    <div id="envoidunetMapInner">\n' +
