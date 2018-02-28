@@ -75,31 +75,37 @@ echo $e->getMessage()."\n";
 //        $carriers->base_price = $carrier->base_price;
 //        $carriers->fuel = $carrier->fuel;
         $carriers->fuel_rate = $carrier->fuel_rate;
-
-        $carriers->security = $carrier->security;
+        if(isset($carrier->security)) {
+            $val_security = $carrier->security;
+        } else {
+            $val_security = '0';
+        }
         $carriers->vat = $carrier->vat;
 //        $carriers->description = $carrier->carrier_description;
 
 ?>
 <fieldset>
     <legend><img src="<?php echo $carrier->carrier_logo; ?>" class="imageGauche" alt="<?php echo $carrier->carrier_name; ?>" /></legend>
-    <b>Service : </b><a><?php echo $carrier->service_name; ?></a>
-    <a> <?php echo $carrier->carrier_description; ?></a><br>
+    <b>Carrier : </b><?php echo $carrier->carrier_name . ' (' . $carrier->carrier . ')'; ?></b>
+    <b>Service : </b><a><?php echo $carrier->service_name . ' / ' . $carrier->carrier_description; ?></a><br>
     <b>Prix : </b><a><?php echo $carrier->price; ?></a>
     <b>( Prix de base : </b><a><?php echo $carrier->base_price; ?></a>
     <b> + Fuel : </b><a><?php echo $carrier->fuel; ?></a>
-    <b> + Security : </b><a><?php echo (isset($carrier->security) ? $carrier->security : "0"); ?></a>
+    <b> + Security : </b><a><?php echo $val_security; ?></a>
     <b>)</b>
-    <span><?php echo $carrier->carrier_name; ?></span>
     <br/>
-
+<?php
+    if($carrier->service=='relay' && $carrier->carrier!== 'kiala') {
+?>
     <!--  Used to recover relays  -->
-    <span class="edn-info" data-relay=<?php echo ($carrier->service === 'relay' ? 'true' : 'false'); ?> data-carrier="<?php echo $carrier->carrier; ?>" data-carrier-name="<?php echo $carrier->carrier_name; ?>"></span>
+    <span class="edn-info" data-relay= 'true' data-carrier="<?php echo $carrier->carrier; ?>" data-carrier-name="<?php echo $carrier->carrier_name; ?>"></span>
     <span class="envoidunet-select-parcel" id="<?php echo 'parcel_' . $carrier->carrier; ?>">Choose a relay</span>
     <br/>
     <span>Selected : <span id="envoidunet-parcel-client"></span></span>
 
-    <br>
+<?php
+    }
+?>
 </fieldset><br>
 
 <?php
@@ -117,6 +123,7 @@ echo $e->getMessage()."\n";
             'mondialrelay' :'Mondial Relay',
             'dpd_relay' :'DPD Relay',
             'chronorelais' : 'Chronopost Relais',
+            'kiala' :'Kiala',
             'ups_express_saver_relay' : 'Ups Express Saver Relay',
             'ups_standard_mono_relay' : 'Ups Standard Monocolis Relay',
             'ups_standard_multi_relay' : 'Ups Standard Multicolis Relay',
