@@ -242,7 +242,10 @@
         }
         info += '</div>';
 
+        $('#envoidunet-parcel-client').html('');
         $('#envoidunet-parcel-client').append(info);
+
+        $('#envoidunet-parcel-client').css('visibility', 'visible');
 
         $('#envoidunetMap').css('display', 'none');
         envoidunet_close_map();

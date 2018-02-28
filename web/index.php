@@ -18,30 +18,25 @@
             <div>Postal code: <span id="to-postcode">06700</span></div>
         </fieldset>
 
-        <fieldset><img src="assets/img/carriers/logo-dhle.png" class="imageGauche" alt=" " />DHL Domestic Express<br></fieldset>
-
-        <fieldset><img src="assets/img/carriers/logo-copr.png" class="imageGauche" alt=" " />Colis Privé</fieldset>
-
         <fieldset>
-            <img src="http://envoidunet.com/assets/img/transporteurs/api/laposte.png" class="imageGauche" alt=" " />Colissimo Relais
-            <span class="edn-info" data-relay= 'true' data-carrier="colissimo_relais" data-carrier-name="Colissimo Relais"></span>
-            <span class="envoidunet-select-parcel" id="parcel_colissimo_relais">Choose a relay</span>
+            <img src="assets/img/carriers/logo-dhle.png" class="imageGauche" alt=" " /><br>
+            <span class="edn-info" data-relay='false' data-carrier="dhl_france" data-carrier-name="DHL Domestic Express"></span>
+            <span class="envoidunet-select-parcel" id="parcel_dhl_france">Choose a relay</span>
         </fieldset>
 
-<!--        <fieldset><img src="assets/img/carriers/logo-fedx.png" class="imageGauche" alt=" " />Lettre Max</fieldset>-->
-<!--        <fieldset>-->
-<!--            <img src="assets/img/carriers/logo-fedx.png" class="imageGauche" alt=" " />Lettre Max-->
-<!--            <span class="edn-info" data-relay= 'true' data-carrier="chronorelais" data-carrier-name="Chrono Relais"></span>-->
-<!--            <span class="envoidunet-select-parcel" id="parcel_chronorelais">Choose a relay</span>-->
-<!--        </fieldset>-->
+        <fieldset>
+            <img src="assets/img/carriers/logo-copr.png" class="imageGauche" alt=" " />
+            <span class="edn-info" data-relay='false' data-carrier="colisprive" data-carrier-name="Colis Privé"></span>
+            <span class="envoidunet-select-parcel" id="parcel_colisprive">Choose a relay</span>
+        </fieldset>
 
         <fieldset>
             <img src="http://envoidunet.com/assets/img/transporteurs/api/chronorelais.jpg" class="imageGauche" alt=" " />Chrono Relais
-            <span class="edn-info" data-relay= 'true' data-carrier="chronorelais" data-carrier-name="Chrono Relais"></span>
+            <span class="edn-info" data-relay='true' data-carrier="chronorelais" data-carrier-name="Chrono Relais"></span>
             <span class="envoidunet-select-parcel" id="parcel_chronorelais">Choose a relay</span>
         </fieldset>
 
-        <fieldset id="envoidunet-parcel-client">
+        <fieldset id="envoidunet-parcel-client" style='visibility: hidden'>
         </fieldset>
 
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -69,9 +64,9 @@
             };
 
             var carrier_code = '';
-            var postcode = '06700';
-            var city = 'Saint Laurent du var';
-            var country = 'FR';
+            var postcode = $('#to-postcode').text();
+            var city = $('#to-city').text();
+            var country = $('#to-country').text();
 
 
             var envoidunet_parcels = null;
@@ -114,7 +109,7 @@
                     var info = $('label[for="'+$(this).attr('id')+'"] .edn-info');
                     if ($(this).is(':checked') && info.length > 0 && $(info).data('relay')) {
                         carrier_code = $(info).data('carrier');
-                        envoidunet_show_map(carrier_code);
+                        envoidunet_show_map(carrier_code, postcode, city, country);
                     }
                 });
 
@@ -124,7 +119,7 @@
                     var info = $('label[for="'+$(checked).attr('id')+'"] .edn-info');
                     if (info.length > 0 && $(info).data('relay')) {
                         carrier_code = $(info).data('carrier');
-                        envoidunet_show_map(carrier_code);
+                        envoidunet_show_map(carrier_code, postcode, city, country);
                     }
                 }
 
