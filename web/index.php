@@ -139,17 +139,10 @@ echo $e->getMessage()."\n";
         'day_7' : 'dimanche'
     };
 
-    var envoidunet_parcels = null;
-    var infowindow = null;
     var carrier_code = '';
     var postcode = '<?php echo $params->to->postcode;?>';
     var city = '<?php echo $params->to->city;?>';
     var country = '<?php echo $params->to->country;?>';
-    var map = null;
-    var bounds = null;
-    var markers = [];
-    var parcels_info = [];
-    var envoidunet_plugin_url = '';
 
     var envoidunet_map_container = '<div id="envoidunetMap">\n' +
         '    <div id="envoidunetMapInner">\n' +
