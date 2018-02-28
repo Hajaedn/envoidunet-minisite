@@ -236,6 +236,10 @@
         }
         $('input[name="_envoidunet_relay"]').val(pointCode);
         $('#envoidunet-parcel-client').html(point.name);
+        $('#envoidunet-parcel-client').append($('<br><span> City: ' + point.city + '</span>'));
+        $('#envoidunet-parcel-client').append($('<br><span> Address 1: ' + point.address1 + '</span>'));
+        $('#envoidunet-parcel-client').append($('<br><span> Address 2: ' + point.address2 + '</span>'));
+
         $('#envoidunetMap').css('display', 'none');
         envoidunet_close_map();
     }
