@@ -228,10 +228,21 @@
             $('form[name="checkout"]').append($('<input type="hidden" name="_envoidunet_relay" />'));
         }
         $('input[name="_envoidunet_relay"]').val(pointCode);
-        $('#envoidunet-parcel-client').html(point.name);
-        $('#envoidunet-parcel-client').append($('<br><span> City: ' + point.city + '</span>'));
-        $('#envoidunet-parcel-client').append($('<br><span> Address 1: ' + point.address1 + '</span>'));
-        $('#envoidunet-parcel-client').append($('<br><span> Address 2: ' + point.address2 + '</span>'));
+
+        var info = "<div class='envoidunetMakerPopup'><b>" + point.name + ' (id: ' + point.relay_id + ')'+ '</b><br/>' +
+            point.address1 + ', ' + point.postcode + ' ' + point.city + '<br/>' + "<b>" + envoidunet_lang['Opening hours'] +
+            "</b><br/>" + '<div class="envoidunetSchedule">';
+
+        for (var j in point.openingHours) {
+            var day = point.openingHours[j];
+
+            info += '<span class="envoidunetDay">' + envoidunet_lang['day_' + day.day] + ' </span>';
+            info += day.hours;
+            info += '<br/>';
+        }
+        info += '</div>';
+
+        $('#envoidunet-parcel-client').append(info);
 
         $('#envoidunetMap').css('display', 'none');
         envoidunet_close_map();
