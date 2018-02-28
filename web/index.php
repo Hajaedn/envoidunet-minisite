@@ -86,7 +86,7 @@ echo $e->getMessage()."\n";
 ?>
 <fieldset>
     <legend><img src="<?php echo $carrier->carrier_logo; ?>" class="imageGauche" alt="<?php echo $carrier->carrier_name; ?>" /></legend>
-    <b>Carrier : </b><?php echo $carrier->carrier_name . ' (' . $carrier->carrier . ')'; ?></b>
+    <b>Carrier : </b><?php echo $carrier->carrier_name . ' (' . $carrier->carrier . ')'; ?>
     <b>Service : </b><a><?php echo $carrier->service_name . ' / ' . $carrier->carrier_description; ?></a><br>
     <b>Prix : </b><a><?php echo $carrier->price; ?></a>
     <b>( Prix de base : </b><a><?php echo $carrier->base_price; ?></a>
@@ -142,6 +142,9 @@ echo $e->getMessage()."\n";
     var envoidunet_parcels = null;
     var infowindow = null;
     var carrier_code = '';
+    var postcode = '<?php echo $params->to->postcode;?>';
+    var city = '<?php echo $params->to->city;?>';
+    var country = '<?php echo $params->to->country;?>';
     var map = null;
     var bounds = null;
     var markers = [];
@@ -173,7 +176,7 @@ echo $e->getMessage()."\n";
 
         $('body').delegate('.envoidunet-select-parcel', 'click', function () {
             carrier_code = $(this).attr('id').replace('parcel_', '');
-            envoidunet_show_map(carrier_code, '06200', 'Nice', 'FR');
+            envoidunet_show_map(carrier_code, postcode, city, country);
         });
 
         $('body').delegate('input.shipping_method', 'change', function () {
