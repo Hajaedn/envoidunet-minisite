@@ -1,12 +1,5 @@
 (function($) {
 
-    var envoidunet_parcels = null;
-    var infowindow = null;
-    var map = null;
-    var bounds = null;
-    var markers = [];
-    var parcels_info = [];
-    var envoidunet_plugin_url = '';
 
     /*
      * Initialize the google map for a new display
