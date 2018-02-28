@@ -11,7 +11,12 @@ require_once 'config.php';
     <h2>Destination</h2>
     <body>
         <form method="POST" action="index.php">
-            06700 / Saint Laurent du Var / FR
+            06700 / Saint Laurent du Var / FR<br>
+            <img src="assets/img/carriers/logo-chrp.png" class="imageGauche" alt=" " />
+            <img src="assets/img/carriers/logo-dhle.png" class="imageGauche" alt=" " />
+            <img src="assets/img/carriers/logo-copr.png" class="imageGauche" alt=" " />
+            <img src="assets/img/carriers/logo-fedx.png" class="imageGauche" alt=" " />
+            <img src="http://envoidunet.com/assets/img/transporteurs/api/chronorelais.jpg" class="imageGauche" alt=" " />
             <input type="hidden" id="toPostcode" name="toPostcode" type="text" >
             <input type="hidden" id="toCity"     name="toCity"     type="text" >
             <input type="hidden" id="toCountry"  name="toCountry"  type="text" >
