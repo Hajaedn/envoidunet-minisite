@@ -11,16 +11,18 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Find relays by Envoidunet</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="assets/img/logo.png" height="50px" alt="">
+        </a>
+
+        <span class="navbar-text">Find relays demo</span>
+
     </nav>
 
     <div class="container">
 
-        <h1>Liste des Transporteurs</h1>
+        <h1>Carriers list</h1>
 
         <form>
             <div class="form-group row">
@@ -43,33 +45,40 @@
             </div>
         </form>
 
-        <fieldset>
-            <div>Destination :</div>
-            <div>Country: <span id="to-country">FR</span></div>
-            <div>City: <span id="to-city">Saint Laurent du Var</span></div>
-            <div>Postal code: <span id="to-postcode">06700</span></div>
-        </fieldset>
-
-        <fieldset>
-            <div>
-                <input name="carrier" class="carrier-selector" type="radio" value="dhl_france" id="dhl_france" data-relay="false">
-                <label for="dhl_france">DHL Domestic Express <img src="assets/img/carriers/logo-dhle.png" class="imageGauche" alt=" " /></label>
+        <form>
+            <div class="form-row vertical-align">
+                <div class="col-3">
+                    <label for="dhl_france"><input name="carrier" class="carrier-selector" type="radio" value="dhl_france" id="dhl_france" data-relay="false"> DHL Domestic Express</label>
+                </div>
+                <div class="col-3">
+                    <label for="dhl_france">
+                        <img src="assets/img/carriers/logo-dhle.png" class="imageGauche" alt=" " />
+                    </label>
+                </div>
             </div>
 
-            <div>
-                <input name="carrier" class="carrier-selector" type="radio" value="colisprive" id="colisprive" data-relay="false">
-                <label for="colisprive">Colis Privé <img src="assets/img/carriers/logo-copr.png" class="imageGauche" alt=" " /></label>
+            <div class="form-row vertical-align">
+                <div class="col-3">
+                    <label for="colisprive"><input name="carrier" class="carrier-selector" type="radio" value="colisprive" id="colisprive" data-relay="false"> Colis Privé</label>
+                </div>
+                <div class="col-3">
+                    <label for="colisprive">
+                        <img src="assets/img/carriers/logo-copr.png" class="imageGauche" alt=" " />
+                    </label>
+                </div>
             </div>
 
-            <div>
-                <input name="carrier" class="carrier-selector" type="radio" value="chronorelais" id="chronorelais" data-relay="true">
-                <label for="chronorelais">Chrono Relais <img src="assets/img/carriers/logo-chrp.png" class="imageGauche" alt=" " /></label>
+            <div class="form-row vertical-align">
+                <div class="col-3">
+                    <label for="chronorelais"><input name="carrier" class="carrier-selector" type="radio" value="chronorelais" id="chronorelais" data-relay="true"> Chrono Relais</label>
+                </div>
+                <div class="col-3">
+                    <label for="chronorelais">
+                        <img src="assets/img/carriers/logo-chrp.png" class="imageGauche" alt=" " />
+                    </label>
+                </div>
             </div>
-
-        </fieldset>
-
-        <fieldset id="envoidunet-parcel-client" style='visibility: hidden'>
-        </fieldset>
+        </form>
 
         <input type="hidden" id="selected_relay"/>
     </div>
