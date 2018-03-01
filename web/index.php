@@ -22,9 +22,8 @@
 
     <div class="container">
 
-        <h1>Carriers list</h1>
-
-        <form>
+        <h2>Destination</h2>
+        <form class="destination-form">
             <div class="form-group row">
                 <label for="to-country" class="col-sm-2 col-form-label">Country :</label>
                 <div class="col-sm-10">
@@ -45,6 +44,7 @@
             </div>
         </form>
 
+        <h2>Carriers list</h2>
         <form>
             <div class="form-row vertical-align">
                 <div class="col-3">
@@ -79,6 +79,8 @@
                 </div>
             </div>
         </form>
+
+        <div id="selected-relay-details"></div>
 
         <input type="hidden" id="selected_relay"/>
     </div>
@@ -118,10 +120,10 @@
                         relay.address1 + ', ' + relay.postcode + ' ' + relay.city;
                     info += '</div>';
 
-                    $('#envoidunet-parcel-client').html('');
-                    $('#envoidunet-parcel-client').append(info);
+                    $('#selected-relay-details').html('');
+                    $('#selected-relay-details').append(info);
 
-                    $('#envoidunet-parcel-client').css('visibility', 'visible');
+                    $('#selected-relay-details').css('visibility', 'visible');
 
                     $("#selected_relay").val(relay.relay_id);
                 },
@@ -161,7 +163,6 @@
                 var country = $('#to-country').val();
                 relayMap.show_map(carrier_code, postcode, city, country);
             }
-
 
         });
     </script>
