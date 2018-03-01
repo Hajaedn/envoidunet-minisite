@@ -315,7 +315,7 @@ if (typeof Envoidunet === 'undefined') {
         };
 
         relayMap.prototype.clear_relay = function () {
-            this.select_relay = null;
+            this.selected_relay = null;
         };
 
         relayMap.prototype.get_selected_relay = function () {

@@ -1,16 +1,48 @@
-<?php
-//include 'header.php';
-?>
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Envoi du net</title>
-        <link rel="stylesheet" type="text/css" href="assets/css/front/style.css">
-    </head>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <body>
+    <title>Envoi du net</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="assets/css/front/style.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Find relays by Envoidunet</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
+
+    <div class="container">
 
         <h1>Liste des Transporteurs</h1>
+
+        <form>
+            <div class="form-group row">
+                <label for="to-country" class="col-sm-2 col-form-label">Country :</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control-plaintext" id="to-country" value="FR">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="to-postcode" class="col-sm-2 col-form-label">Postcode :</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control-plaintext" id="to-postcode" value="06200">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="to-city" class="col-sm-2 col-form-label">City :</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control-plaintext" id="to-city" value="Saint Laurent Du Var">
+                </div>
+            </div>
+        </form>
+
         <fieldset>
             <div>Destination :</div>
             <div>Country: <span id="to-country">FR</span></div>
@@ -19,131 +51,114 @@
         </fieldset>
 
         <fieldset>
-            <img src="assets/img/carriers/logo-dhle.png" class="imageGauche" alt=" " /><br>
-            <span class="edn-info" data-relay='false' data-carrier="dhl_france" data-carrier-name="DHL Domestic Express"></span>
-        </fieldset>
+            <div>
+                <input name="carrier" class="carrier-selector" type="radio" value="dhl_france" id="dhl_france" data-relay="false">
+                <label for="dhl_france">DHL Domestic Express <img src="assets/img/carriers/logo-dhle.png" class="imageGauche" alt=" " /></label>
+            </div>
 
-        <fieldset>
-            <img src="assets/img/carriers/logo-copr.png" class="imageGauche" alt=" " />
-            <span class="edn-info" data-relay='false' data-carrier="colisprive" data-carrier-name="Colis Privé"></span>
-        </fieldset>
+            <div>
+                <input name="carrier" class="carrier-selector" type="radio" value="colisprive" id="colisprive" data-relay="false">
+                <label for="colisprive">Colis Privé <img src="assets/img/carriers/logo-copr.png" class="imageGauche" alt=" " /></label>
+            </div>
 
-        <fieldset>
-            <img src="http://envoidunet.com/assets/img/transporteurs/api/chronorelais.jpg" class="imageGauche" alt=" " />Chrono Relais
-            <span class="edn-info" data-relay='true' data-carrier="chronorelais" data-carrier-name="Chrono Relais"></span>
-            <span class="envoidunet-select-parcel" id="parcel_chronorelais">Choose a relay</span>
+            <div>
+                <input name="carrier" class="carrier-selector" type="radio" value="chronorelais" id="chronorelais" data-relay="true">
+                <label for="chronorelais">Chrono Relais <img src="assets/img/carriers/logo-chrp.png" class="imageGauche" alt=" " /></label>
+            </div>
+
         </fieldset>
 
         <fieldset id="envoidunet-parcel-client" style='visibility: hidden'>
         </fieldset>
 
         <input type="hidden" id="selected_relay"/>
+    </div>
 
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
 
-        <script>
+    <script>
 
-            $(document).ready(function () {
+        $(document).ready(function () {
 
-                (
-                    /**
-                     * Create link to findRelays when attribute 'data-relay' = 'true'
-                     * @param $ jQuery
-                     */
-                    function($){
-                        $('.envoidunet-select-carrier').each(
-                            function () {
-                                if(this.children('.edn-info').attr('data-relay') == 'true'){
-                                    this.append('<span class="envoidunet-select-parcel" id="parcel_' + this.find('.edn-info').attr('data-carrier') + '>Choose a relay</span>');
-                                }
-                            }
-                        )
-                    }
-                )(jQuery);
-
-                var relayMap = new Envoidunet.RelayMap({
-                    find_relays_url: 'findrelays.php',
-                    image_dir: '/assets/img',
-                    lang: {
-                        'relayName' : {
-                            'mondialrelay' :'Mondial Relay',
-                            'dpd_relay' :'DPD Relay',
-                            'chronorelais' : 'Chronopost Relais',
-                            'kiala' :'Kiala',
-                            'ups_express_saver_relay' : 'Ups Express Saver Relay',
-                            'ups_standard_mono_relay' : 'Ups Standard Monocolis Relay',
-                            'ups_standard_multi_relay' : 'Ups Standard Multicolis Relay',
-                            'colissimo_relais' : 'Colissimo Relais'
-                        },
-                        'Opening hours' : 'Heures d\'ouverture',
-                        'day_1' : 'lundi',
-                        'day_2' : 'mardi',
-                        'day_3' : 'mercredi',
-                        'day_4' : 'jeudi',
-                        'day_5' : 'vendredi',
-                        'day_6' : 'samedi',
-                        'day_7' : 'dimanche'
+            var relayMap = new Envoidunet.RelayMap({
+                find_relays_url: 'findrelays.php',
+                image_dir: '/assets/img',
+                lang: {
+                    'relayName' : {
+                        'mondialrelay' :'Mondial Relay',
+                        'dpd_relay' :'DPD Relay',
+                        'chronorelais' : 'Chronopost Relais',
+                        'kiala' :'Kiala',
+                        'ups_express_saver_relay' : 'Ups Express Saver Relay',
+                        'ups_standard_mono_relay' : 'Ups Standard Monocolis Relay',
+                        'ups_standard_multi_relay' : 'Ups Standard Multicolis Relay',
+                        'colissimo_relais' : 'Colissimo Relais'
                     },
-                    selected_relay: function (relay) {
-                        var info = "<div class='envoidunetMakerPopup'><b>" + relay.name + ' (id: ' + relay.relay_id + ')'+ '</b><br/>' +
-                            relay.address1 + ', ' + relay.postcode + ' ' + relay.city;
-                        info += '</div>';
+                    'Opening hours' : 'Heures d\'ouverture',
+                    'day_1' : 'lundi',
+                    'day_2' : 'mardi',
+                    'day_3' : 'mercredi',
+                    'day_4' : 'jeudi',
+                    'day_5' : 'vendredi',
+                    'day_6' : 'samedi',
+                    'day_7' : 'dimanche'
+                },
+                selected_relay: function (relay) {
+                    var info = "<div class='envoidunetMakerPopup'><b>" + relay.name + ' (id: ' + relay.relay_id + ')'+ '</b><br/>' +
+                        relay.address1 + ', ' + relay.postcode + ' ' + relay.city;
+                    info += '</div>';
 
-                        $('#envoidunet-parcel-client').html('');
-                        $('#envoidunet-parcel-client').append(info);
+                    $('#envoidunet-parcel-client').html('');
+                    $('#envoidunet-parcel-client').append(info);
 
-                        $('#envoidunet-parcel-client').css('visibility', 'visible');
+                    $('#envoidunet-parcel-client').css('visibility', 'visible');
 
-                        $("#selected_relay").val(relay.relay_id);
-                    },
-                    debug: true
-                });
-
-
-                // close map if selected carrier is changed and remove parcel point selection
-                $('body').delegate('input.shipping_method', 'change', function () {
-                    relayMap.close_map();
-                    relayMap.clear_relay();
-                });
-
-                $('body').delegate('.envoidunet-select-parcel', 'click', function () {
-                    var carrier_code = $(this).attr('id').replace('parcel_', '');
-                    var postcode = $('#to-postcode').text();
-                    var city = $('#to-city').text();
-                    var country = $('#to-country').text();
-                    relayMap.show_map(carrier_code, postcode, city, country);
-                });
-
-                $('body').delegate('input.shipping_method', 'change', function () {
-                    var info = $('label[for="'+$(this).attr('id')+'"] .edn-info');
-                    if ($(this).is(':checked') && info.length > 0 && $(info).data('relay')) {
-                        var carrier_code = $(info).data('carrier');
-                        var postcode = $('#to-postcode').text();
-                        var city = $('#to-city').text();
-                        var country = $('#to-country').text();
-                        relayMap.show_map(carrier_code, postcode, city, country);
-                    }
-                });
-
-                // Show the map if a shipping method is already selected
-                var checked = $('input.shipping_method:checked');
-                if (checked.length > 0) {
-                    var info = $('label[for="'+$(checked).attr('id')+'"] .edn-info');
-                    if (info.length > 0 && $(info).data('relay')) {
-                        var carrier_code = $(info).data('carrier');
-                        var postcode = $('#to-postcode').text();
-                        var city = $('#to-city').text();
-                        var country = $('#to-country').text();
-                        relayMap.show_map(carrier_code, postcode, city, country);
-                    }
-                }
-
-                debugger;
+                    $("#selected_relay").val(relay.relay_id);
+                },
+                debug: true
             });
-        </script>
 
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLaRQHgBQDiHVKMCk_3GPM6Q1gmNQ4E-U"></script>
-        <script src="assets/js/front/relays.js"></script>
 
-    </body>
+            // close map if selected carrier is changed and remove parcel point selection
+            $('body').delegate('input.carrier-selector', 'change', function () {
+                relayMap.close_map();
+                relayMap.clear_relay();
+            });
+
+            // Get carrier-selector inputs with data-relay="true"
+            $('body').delegate("input.carrier-selector[data-relay='true']", 'click', function () {
+                var carrier_code = $(this).attr('id');
+                var postcode = $('#to-postcode').val();
+                var city = $('#to-city').val();
+                var country = $('#to-country').val();
+                relayMap.show_map(carrier_code, postcode, city, country);
+            });
+
+            $('body').delegate('input.carrier-selector[data-relay="true"]', 'change', function () {
+                var carrier_code = $(this).attr('id');
+                var postcode = $('#to-postcode').val();
+                var city = $('#to-city').val();
+                var country = $('#to-country').val();
+                relayMap.show_map(carrier_code, postcode, city, country);
+            });
+
+            // Show the map if a shipping method is already selected
+            var checked = $('input.carrier-selector:checked[data-relay="true"]');
+            if (checked.length > 0) {
+                var carrier_code = $(this).attr('id');
+                var postcode = $('#to-postcode').val();
+                var city = $('#to-city').val();
+                var country = $('#to-country').val();
+                relayMap.show_map(carrier_code, postcode, city, country);
+            }
+
+
+        });
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLaRQHgBQDiHVKMCk_3GPM6Q1gmNQ4E-U"></script>
+    <script src="assets/js/front/relays.js"></script>
+
+</body>
 </html>
