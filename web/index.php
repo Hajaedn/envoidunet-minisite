@@ -12,7 +12,7 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-dark bg-dark edn-navbar">
         <a class="navbar-brand mx-auto" href="#"><h4>Find relays example... by
             <img id="edn-logo" src="assets/img/logo.png" height="50px" alt=""></h4>
         </a>
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="to-postcode" class="col-sm-2 col-form-label">Postcode :</label>
+                <label for="to-postcode" class="col-sm-2 col-form-label">Postal code :</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="to-postcode" value="06200" placeholder="Enter a postcode">
                 </div>
@@ -42,38 +42,36 @@
             </div>
         </form>
 
-        <div class="row-fluid">
-            <form class="py-4">
-                <h3 class="mb-4">Carriers list</h3>
+        <form class="py-4">
+            <h3 class="mb-4">Carriers list</h3>
 
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <div class="form-group mx-1">
-                        <label for="colisprive" class="btn btn-outline-secondary my-0">
-                            <input name="carrier" class="carrier-selector" type="radio" value="colisprive" id="colisprive" data-relay="false" autocomplete="off">
-                            Colis Privé
-                            <img src="assets/img/carriers/logo-copr.png" class="carrier-img ml-3" alt=" " />
-                        </label>
-                    </div>
-
-                    <div class="form-group mx-1">
-                        <label for="dhl_france" class="btn btn-outline-secondary my-0">
-                            <input name="carrier" class="carrier-selector" type="radio" value="dhl_france" id="dhl_france" data-relay="false" autocomplete="off">
-                            DHL Domestic Express
-                            <img src="assets/img/carriers/logo-dhle.png" class="carrier-img ml-3" alt=" " />
-                        </label>
-                    </div>
-
-                    <div class="form-group mx-1">
-                        <label for="chronorelais" class="btn btn-outline-secondary my-0">
-                            <input name="carrier" class="carrier-selector" type="radio" value="chronorelais" id="chronorelais" data-relay="true" autocomplete="off">
-                            Chrono Relais
-                            <img src="assets/img/carriers/logo-chrp.png" class="carrier-img ml-0" alt=" " />
-                        </label>
-                        <small class="form-text text-muted">This one triggers the relay map.</small>
-                    </div>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <div class="form-group mx-1">
+                    <label for="colisprive" class="btn btn-outline-secondary my-0">
+                        <input name="carrier" class="carrier-selector" type="radio" value="colisprive" id="colisprive" data-relay="false" autocomplete="off">
+                        Colis Privé
+                        <img src="assets/img/carriers/logo-copr.png" class="carrier-img ml-3" alt=" " />
+                    </label>
                 </div>
-            </form>
-        </div>
+
+                <div class="form-group mx-1">
+                    <label for="dhl_france" class="btn btn-outline-secondary my-0">
+                        <input name="carrier" class="carrier-selector" type="radio" value="dhl_france" id="dhl_france" data-relay="false" autocomplete="off">
+                        DHL Domestic Express
+                        <img src="assets/img/carriers/logo-dhle.png" class="carrier-img ml-3" alt=" " />
+                    </label>
+                </div>
+
+                <div class="form-group mx-1">
+                    <label for="chronorelais" class="btn btn-outline-secondary my-0">
+                        <input name="carrier" class="carrier-selector" type="radio" value="chronorelais" id="chronorelais" data-relay="true" autocomplete="off">
+                        Chrono Relais
+                        <img src="assets/img/carriers/logo-chrp.png" class="carrier-img ml-0" alt=" " />
+                    </label>
+                    <small class="form-text text-muted">This one triggers the relay map.</small>
+                </div>
+            </div>
+        </form>
 
         <div class="py-4" id="selected-relay-details"></div>
 

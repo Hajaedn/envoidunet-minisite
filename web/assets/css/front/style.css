@@ -1,3 +1,6 @@
+.edn-navbar{
+    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.76);
+}
 #edn-logo{
     filter: contrast(0) brightness(100);
 }
@@ -13,7 +16,6 @@
 .nobr{
 	white-space:nowrap;
 }
-
 .shipping .carrier_logo img{
 	width:100px;
 	padding-left:10px;
@@ -74,7 +76,7 @@
     margin-left:-268px;
     float:right;
     box-sizing:border-box;
-    font-family:Roboto, Arial, sans-serif;
+    /*font-family:Roboto, Arial, sans-serif;*/
 }
 #envoidunetMap #envoidunetPrContainer table{
     border:0;
