@@ -20,14 +20,17 @@ try {
         $error = $result['error'];
         $message = $error->error_message;
         $message .= isset($error->error_description) ? ' ('.$error->error_description.')' : '';
-        echo $message."\n";
     }
 
     $relays = isset($result['response']->relays) ? $result['response']->relays : [];
 
-    echo json_encode($relays, JSON_PRETTY_PRINT);
+    $returnObject = new stdClass();
+    $returnObject->relays = $relays;
+    $returnObject->error = $message ? $message : '';
+
+    echo json_encode($returnObject, JSON_PRETTY_PRINT);
 
 } catch (SoapFault $e) {
-    echo $e->getMessage()."\n";
+    echo json_encode([]);
 }
 

@@ -2,7 +2,7 @@ if (typeof Envoidunet === 'undefined') {
 
     var Envoidunet = {};
 
-    Envoidunet.RelayMap = (function($) {
+    Envoidunet.RelayMap = (function ($) {
 
         var map_container = '<div id="envoidunetMap">\n' +
             '    <div id="envoidunetMapInner">\n' +
@@ -23,24 +23,24 @@ if (typeof Envoidunet === 'undefined') {
 
         var defaultOptions = {
             lang: {
-                'relayName' : {
-                    'mondialrelay' :'Mondial Relay',
-                    'dpd_relay' :'DPD Relay',
-                    'chronorelais' : 'Chronopost Relais',
-                    'kiala' :'Kiala',
-                    'ups_express_saver_relay' : 'Ups Express Saver Relay',
-                    'ups_standard_mono_relay' : 'Ups Standard Monocolis Relay',
-                    'ups_standard_multi_relay' : 'Ups Standard Multicolis Relay',
-                    'colissimo_relais' : 'Colissimo Relais'
+                'relayName': {
+                    'mondialrelay': 'Mondial Relay',
+                    'dpd_relay': 'DPD Relay',
+                    'chronorelais': 'Chronopost Relais',
+                    'kiala': 'Kiala',
+                    'ups_express_saver_relay': 'Ups Express Saver Relay',
+                    'ups_standard_mono_relay': 'Ups Standard Monocolis Relay',
+                    'ups_standard_multi_relay': 'Ups Standard Multicolis Relay',
+                    'colissimo_relais': 'Colissimo Relais'
                 },
-                'Opening hours' : 'Heures d\'ouverture',
-                'day_1' : 'lundi',
-                'day_2' : 'mardi',
-                'day_3' : 'mercredi',
-                'day_4' : 'jeudi',
-                'day_5' : 'vendredi',
-                'day_6' : 'samedi',
-                'day_7' : 'dimanche'
+                'Opening hours': 'Heures d\'ouverture',
+                'day_1': 'lundi',
+                'day_2': 'mardi',
+                'day_3': 'mercredi',
+                'day_4': 'jeudi',
+                'day_5': 'vendredi',
+                'day_6': 'samedi',
+                'day_7': 'dimanche'
             },
             debug: false
         };
@@ -176,11 +176,16 @@ if (typeof Envoidunet === 'undefined') {
         /*
          * Now that we have all the parcel points, we display them
          */
-        relayMap.prototype.show_relays = function (relays) {
+        relayMap.prototype.show_relays = function (response) {
+            var relays = response.relays;
+            var error_msg = response.error !== '' ? (' : ' + response.error) : '';
             parcels = relays;
 
             if (relays.length === 0) {
-                alert(this.options.lang.noPP);
+                if (this.options.debug) {
+                    console.debug(this.options.lang['No relaypoint available'] + error_msg);
+                }
+                alert(this.options.lang['No relaypoint available'] + error_msg);
                 return;
             }
 
@@ -302,6 +307,9 @@ if (typeof Envoidunet === 'undefined') {
         };
 
         relayMap.prototype.error_relays = function (jqXHR, textStatus, errorThrown) {
+            if (this.options.debug) {
+                console.debug(this.options.lang['Unable to load relay points'] + ' : ' + errorThrown);
+            }
             alert(this.options.lang['Unable to load relay points'] + ' : ' + errorThrown);
         };
 

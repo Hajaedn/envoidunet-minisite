@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Envoi du net</title>
+    <title>EDN - findRelays demo</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="assets/css/front/style.css">
@@ -27,19 +27,19 @@
             <div class="form-group row">
                 <label for="to-country" class="col-sm-2 col-form-label">Country :</label>
                 <div class="col-sm-10">
-                    <input type="text" readonly class="form-control-plaintext" id="to-country" value="FR">
+                    <input type="text" class="form-control" id="to-country" value="FR">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="to-postcode" class="col-sm-2 col-form-label">Postcode :</label>
                 <div class="col-sm-10">
-                    <input type="text" readonly class="form-control-plaintext" id="to-postcode" value="06200">
+                    <input type="text" class="form-control" id="to-postcode" value="06200">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="to-city" class="col-sm-2 col-form-label">City :</label>
                 <div class="col-sm-10">
-                    <input type="text" readonly class="form-control-plaintext" id="to-city" value="Saint Laurent Du Var">
+                    <input type="text" class="form-control" id="to-city" value="Saint Laurent Du Var">
                 </div>
             </div>
         </form>
@@ -113,7 +113,9 @@
                     'day_4' : 'jeudi',
                     'day_5' : 'vendredi',
                     'day_6' : 'samedi',
-                    'day_7' : 'dimanche'
+                    'day_7' : 'dimanche',
+                    'Unable to load relay points' : 'Impossible de charger les points relais',
+                    'No relaypoint available' : 'Aucun point relais disponible'
                 },
                 selected_relay: function (relay) {
                     var info = "<div class='envoidunetMakerPopup'><b>" + relay.name + ' (id: ' + relay.relay_id + ')'+ '</b><br/>' +
@@ -132,13 +134,13 @@
 
 
             // close map if selected carrier is changed and remove parcel point selection
-            $('body').delegate('input.carrier-selector', 'change', function () {
+            $('body').on('change', 'input.carrier-selector' , function () {
                 relayMap.close_map();
                 relayMap.clear_relay();
             });
 
-            // Get carrier-selector inputs with data-relay="true"
-            $('body').delegate("input.carrier-selector[data-relay='true']", 'click', function () {
+            // Performs find relays request by selecting a carrier with data-relay="true"
+            $('body').on('click', 'input.carrier-selector[data-relay="true"]', function () {
                 var carrier_code = $(this).attr('id');
                 var postcode = $('#to-postcode').val();
                 var city = $('#to-city').val();
@@ -146,7 +148,7 @@
                 relayMap.show_map(carrier_code, postcode, city, country);
             });
 
-            $('body').delegate('input.carrier-selector[data-relay="true"]', 'change', function () {
+            $('body').on('change', 'input.carrier-selector[data-relay="true"]', function () {
                 var carrier_code = $(this).attr('id');
                 var postcode = $('#to-postcode').val();
                 var city = $('#to-city').val();
