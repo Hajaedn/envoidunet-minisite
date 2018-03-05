@@ -12,69 +12,68 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">
-            <img src="assets/img/logo.png" height="50px" alt="">
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand mx-auto" href="#"><h4>Find relays example... by
+            <img id="edn-logo" src="assets/img/logo.png" height="50px" alt=""></h4>
         </a>
-
-        <span class="navbar-text">Find relays demo</span>
-
     </nav>
 
     <div class="container">
 
-        <form class="destination-form py-4">
-            <h3>Destination</h3>
+        <form class="py-4 destination-form">
+            <h3 class="mb-4">Destination form</h3>
             <div class="form-group row">
                 <label for="to-country" class="col-sm-2 col-form-label">Country :</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="to-country" value="FR">
+                    <input type="text" class="form-control" id="to-country" value="FR" placeholder="Enter a valid country code">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="to-postcode" class="col-sm-2 col-form-label">Postcode :</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="to-postcode" value="06200">
+                    <input type="text" class="form-control" id="to-postcode" value="06200" placeholder="Enter a postcode">
                 </div>
             </div>
             <div class="form-group row">
                 <label for="to-city" class="col-sm-2 col-form-label">City :</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="to-city" value="Saint Laurent Du Var">
+                    <input type="text" class="form-control" id="to-city" value="Saint Laurent Du Var" placeholder="Enter a city name">
                 </div>
             </div>
         </form>
 
-        <form class="py-4">
-            <h3>Carriers list</h3>
+        <div class="row-fluid">
+            <form class="py-4">
+                <h3 class="mb-4">Carriers list</h3>
 
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <div class="form-group">
-                    <label for="chronorelais" class="btn btn-outline-secondary my-0 ml-3">
-                        <input name="carrier" class="carrier-selector" type="radio" value="chronorelais" id="chronorelais" data-relay="true" autocomplete="off">
-                        Chrono Relais
-                        <img src="assets/img/carriers/logo-chrp.png" class="carrier-img ml-3" alt=" " />
-                    </label>
-                    <small class="form-text text-muted">The only one wich triggers the relay map.</small>
-                </div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <div class="form-group mx-1">
+                        <label for="colisprive" class="btn btn-outline-secondary my-0">
+                            <input name="carrier" class="carrier-selector" type="radio" value="colisprive" id="colisprive" data-relay="false" autocomplete="off">
+                            Colis Privé
+                            <img src="assets/img/carriers/logo-copr.png" class="carrier-img ml-3" alt=" " />
+                        </label>
+                    </div>
 
-                <div class="form-group">
-                    <label for="colisprive" class="btn btn-outline-secondary my-0 ml-3">
-                        <input name="carrier" class="carrier-selector" type="radio" value="colisprive" id="colisprive" data-relay="false" autocomplete="off">
-                        Colis Privé
-                        <img src="assets/img/carriers/logo-copr.png" class="carrier-img ml-3" alt=" " />
-                    </label>
-                </div>
+                    <div class="form-group mx-1">
+                        <label for="dhl_france" class="btn btn-outline-secondary my-0">
+                            <input name="carrier" class="carrier-selector" type="radio" value="dhl_france" id="dhl_france" data-relay="false" autocomplete="off">
+                            DHL Domestic Express
+                            <img src="assets/img/carriers/logo-dhle.png" class="carrier-img ml-3" alt=" " />
+                        </label>
+                    </div>
 
-                <div class="form-group">
-                    <label for="dhl_france" class="btn btn-outline-secondary my-0 ml-3">
-                        <input name="carrier" class="carrier-selector" type="radio" value="dhl_france" id="dhl_france" data-relay="false" autocomplete="off">
-                        DHL Domestic Express
-                        <img src="assets/img/carriers/logo-dhle.png" class="carrier-img ml-3" alt=" " />
-                    </label>
+                    <div class="form-group mx-1">
+                        <label for="chronorelais" class="btn btn-outline-secondary my-0">
+                            <input name="carrier" class="carrier-selector" type="radio" value="chronorelais" id="chronorelais" data-relay="true" autocomplete="off">
+                            Chrono Relais
+                            <img src="assets/img/carriers/logo-chrp.png" class="carrier-img ml-0" alt=" " />
+                        </label>
+                        <small class="form-text text-muted">The only one wich triggers the relay map.</small>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
 
         <div class="py-4" id="selected-relay-details"></div>
 
@@ -114,7 +113,7 @@
                     'No relaypoint available' : 'Aucun point relais disponible'
                 },
                 selected_relay: function (relay) {
-                    var info = "<div><h3>" + relay.name + ' (id: ' + relay.relay_id + ')'+ '</h3>' +
+                    var info = "<div><h3>Selected relay point : " + relay.name + ' (id: ' + relay.relay_id + ')'+ '</h3>' +
                         relay.address1 + ', ' + relay.postcode + ' ' + relay.city;
                     info += '</div>';
 

@@ -1,12 +1,11 @@
+#edn-logo{
+    filter: contrast(0) brightness(100);
+}
 .carrier-img{
     height: 60px;
 }
 .destination-form label{
     font-weight: bold;
-}
-.vertical-align {
-    display: flex;
-    align-items: center;
 }
 .clear{
 	clear:both;
