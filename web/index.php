@@ -69,7 +69,7 @@
                             Chrono Relais
                             <img src="assets/img/carriers/logo-chrp.png" class="carrier-img ml-0" alt=" " />
                         </label>
-                        <small class="form-text text-muted">The only one wich triggers the relay map.</small>
+                        <small class="form-text text-muted">This one triggers the relay map.</small>
                     </div>
                 </div>
             </form>
@@ -88,8 +88,10 @@
         $(document).ready(function () {
 
             var relayMap = new Envoidunet.RelayMap({
-                find_relays_url: 'findrelays.php',
-                image_dir: '/assets/img',
+                find_relays_url: 'findrelays.php',// Url to the 'findrelays request' launcher
+                image_dir: '/assets/img',// Path to your img (logo) directory
+                debug: true, // enables development logs
+                //translations
                 lang: {
                     'relayName' : {
                         'mondialrelay' :'Mondial Relay',
@@ -112,6 +114,7 @@
                     'Unable to load relay points' : 'Impossible de charger les points relais',
                     'No relaypoint available' : 'Aucun point relais disponible'
                 },
+                // Give what to do with the selected relay :
                 selected_relay: function (relay) {
                     var info = "<div><h3>Selected relay point : " + relay.name + ' (id: ' + relay.relay_id + ')'+ '</h3>' +
                         relay.address1 + ', ' + relay.postcode + ' ' + relay.city;
@@ -123,8 +126,7 @@
                     $('#selected-relay-details').css('visibility', 'visible');
 
                     $("#selected_relay").val(relay.relay_id);
-                },
-                debug: true
+                }
             });
 
 
@@ -152,13 +154,15 @@
             });
 
             // Show the map if a shipping method is already selected
-            var checked = $('input.carrier-selector:checked[data-relay="true"]');
+            var checked = $('input.carrier-selector:checked');
             if (checked.length > 0) {
-                var carrier_code = $(this).attr('id');
-                var postcode = $('#to-postcode').val();
-                var city = $('#to-city').val();
-                var country = $('#to-country').val();
-                relayMap.show_map(carrier_code, postcode, city, country);
+                if($(checked).attr('data-relay') === "true"){
+                    var carrier_code = $(checked).attr('id');
+                    var postcode = $('#to-postcode').val();
+                    var city = $('#to-city').val();
+                    var country = $('#to-country').val();
+                    relayMap.show_map(carrier_code, postcode, city, country);
+                }
             }
 
         });
