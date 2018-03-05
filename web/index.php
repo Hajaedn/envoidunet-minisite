@@ -6,7 +6,8 @@
 
     <title>EDN - findRelays demo</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <link rel="stylesheet" type="text/css" href="assets/css/front/style.css">
 </head>
 <body>
@@ -22,8 +23,8 @@
 
     <div class="container">
 
-        <h2>Destination</h2>
-        <form class="destination-form">
+        <form class="destination-form py-4">
+            <h3>Destination</h3>
             <div class="form-group row">
                 <label for="to-country" class="col-sm-2 col-form-label">Country :</label>
                 <div class="col-sm-10">
@@ -44,50 +45,45 @@
             </div>
         </form>
 
-        <h2>Carriers list</h2>
-        <form>
-            <div class="form-row vertical-align">
-                <div class="col-3">
-                    <label for="dhl_france"><input name="carrier" class="carrier-selector" type="radio" value="dhl_france" id="dhl_france" data-relay="false"> DHL Domestic Express</label>
+        <form class="py-4">
+            <h3>Carriers list</h3>
+
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <div class="form-group">
+                    <label for="chronorelais" class="btn btn-outline-secondary my-0 ml-3">
+                        <input name="carrier" class="carrier-selector" type="radio" value="chronorelais" id="chronorelais" data-relay="true" autocomplete="off">
+                        Chrono Relais
+                        <img src="assets/img/carriers/logo-chrp.png" class="carrier-img ml-3" alt=" " />
+                    </label>
+                    <small class="form-text text-muted">The only one wich triggers the relay map.</small>
                 </div>
-                <div class="col-3">
-                    <label for="dhl_france">
-                        <img src="assets/img/carriers/logo-dhle.png" class="imageGauche" alt=" " />
+
+                <div class="form-group">
+                    <label for="colisprive" class="btn btn-outline-secondary my-0 ml-3">
+                        <input name="carrier" class="carrier-selector" type="radio" value="colisprive" id="colisprive" data-relay="false" autocomplete="off">
+                        Colis Privé
+                        <img src="assets/img/carriers/logo-copr.png" class="carrier-img ml-3" alt=" " />
                     </label>
                 </div>
-            </div>
 
-            <div class="form-row vertical-align">
-                <div class="col-3">
-                    <label for="colisprive"><input name="carrier" class="carrier-selector" type="radio" value="colisprive" id="colisprive" data-relay="false"> Colis Privé</label>
-                </div>
-                <div class="col-3">
-                    <label for="colisprive">
-                        <img src="assets/img/carriers/logo-copr.png" class="imageGauche" alt=" " />
-                    </label>
-                </div>
-            </div>
-
-            <div class="form-row vertical-align">
-                <div class="col-3">
-                    <label for="chronorelais"><input name="carrier" class="carrier-selector" type="radio" value="chronorelais" id="chronorelais" data-relay="true"> Chrono Relais</label>
-                </div>
-                <div class="col-3">
-                    <label for="chronorelais">
-                        <img src="assets/img/carriers/logo-chrp.png" class="imageGauche" alt=" " />
+                <div class="form-group">
+                    <label for="dhl_france" class="btn btn-outline-secondary my-0 ml-3">
+                        <input name="carrier" class="carrier-selector" type="radio" value="dhl_france" id="dhl_france" data-relay="false" autocomplete="off">
+                        DHL Domestic Express
+                        <img src="assets/img/carriers/logo-dhle.png" class="carrier-img ml-3" alt=" " />
                     </label>
                 </div>
             </div>
         </form>
 
-        <div id="selected-relay-details"></div>
+        <div class="py-4" id="selected-relay-details"></div>
 
         <input type="hidden" id="selected_relay"/>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
-
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script>
 
         $(document).ready(function () {
@@ -118,7 +114,7 @@
                     'No relaypoint available' : 'Aucun point relais disponible'
                 },
                 selected_relay: function (relay) {
-                    var info = "<div class='envoidunetMakerPopup'><b>" + relay.name + ' (id: ' + relay.relay_id + ')'+ '</b><br/>' +
+                    var info = "<div><h3>" + relay.name + ' (id: ' + relay.relay_id + ')'+ '</h3>' +
                         relay.address1 + ', ' + relay.postcode + ' ' + relay.city;
                     info += '</div>';
 
