@@ -18,7 +18,7 @@
 
     <nav class="navbar navbar-dark bg-dark edn-navbar">
         <a class="navbar-brand mx-auto" href="#"><h4>Find relays example... by
-            <img id="edn-logo" src="assets/img/logo.png" height="50px" alt=""></h4>
+            <img id="edn_logo" src="assets/img/logo.png" height="50px" alt=""></h4>
         </a>
     </nav>
 
@@ -27,21 +27,21 @@
         <form class="py-4 destination-form">
             <h3 class="mb-4">Destination form</h3>
             <div class="form-group row">
-                <label for="to-country" class="col-sm-2 col-form-label">Country :</label>
+                <label for="to_country" class="col-sm-2 col-form-label">Country :</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="to-country" value="FR" placeholder="Enter a valid country code">
+                    <input type="text" class="form-control" id="to_country" value="FR" placeholder="Enter a valid country code">
                 </div>
             </div>
             <div class="form-group row">
-                <label for="to-postcode" class="col-sm-2 col-form-label">Postal code :</label>
+                <label for="to_postcode" class="col-sm-2 col-form-label">Postal code :</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="to-postcode" value="06200" placeholder="Enter a postcode">
+                    <input type="text" class="form-control" id="to_postcode" value="06200" placeholder="Enter a postcode">
                 </div>
             </div>
             <div class="form-group row">
-                <label for="to-city" class="col-sm-2 col-form-label">City :</label>
+                <label for="to_city" class="col-sm-2 col-form-label">City :</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="to-city" value="Saint Laurent Du Var" placeholder="Enter a city name">
+                    <input type="text" class="form-control" id="to_city" value="Saint Laurent Du Var" placeholder="Enter a city name">
                 </div>
             </div>
         </form>
@@ -146,17 +146,17 @@
             // Performs a find relays request when selecting a carrier with data-relay="true"
             $('body').on('click', 'input.carrier-selector[data-relay="true"]', function () {
                 var carrier_code = $(this).data('carrier');
-                var postcode = $('#to-postcode').val();
-                var city = $('#to-city').val();
-                var country = $('#to-country').val();
+                var postcode = $('#to_postcode').val();
+                var city = $('#to_city').val();
+                var country = $('#to_country').val();
                 relayMap.show_map(carrier_code, postcode, city, country);
             });
 
             $('body').on('change', 'input.carrier-selector[data-relay="true"]', function () {
                 var carrier_code = $(this).data('carrier');
-                var postcode = $('#to-postcode').val();
-                var city = $('#to-city').val();
-                var country = $('#to-country').val();
+                var postcode = $('#to_postcode').val();
+                var city = $('#to_city').val();
+                var country = $('#to_country').val();
                 relayMap.show_map(carrier_code, postcode, city, country);
             });
 
@@ -164,9 +164,9 @@
             var checked = $('input.carrier-selector[data-relay="true"]:checked');
             if (checked.length > 0) {
                 var carrier_code = $(checked).data('carrier');
-                var postcode = $('#to-postcode').val();
-                var city = $('#to-city').val();
-                var country = $('#to-country').val();
+                var postcode = $('#to_postcode').val();
+                var city = $('#to_city').val();
+                var country = $('#to_country').val();
                 relayMap.show_map(carrier_code, postcode, city, country);
             }
 
