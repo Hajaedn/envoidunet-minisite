@@ -1,11 +1,7 @@
-form .testing-layout{
-    background-color: #f1eef6;
-    border-radius: 7px !important;
-}
 .edn-navbar{
     box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.76);
 }
-#edn-logo{
+#edn_logo{
     filter: contrast(0) brightness(100);
 }
 .carrier-img{
