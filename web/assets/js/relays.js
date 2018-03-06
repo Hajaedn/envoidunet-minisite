@@ -306,6 +306,9 @@ if (typeof Envoidunet === 'undefined') {
             this.close_map();
         };
 
+        /*
+         * Show errors
+         */
         relayMap.prototype.error_relays = function (jqXHR, textStatus, errorThrown) {
             if (this.options.debug) {
                 console.debug(this.options.lang['Unable to load relay points'] + ' : ' + errorThrown);
@@ -322,10 +325,16 @@ if (typeof Envoidunet === 'undefined') {
             return time;
         };
 
+        /*
+         * Use it before changing carrier
+         */
         relayMap.prototype.clear_relay = function () {
             this.selected_relay = null;
         };
 
+        /*
+         * Use it before changing carrier
+         */
         relayMap.prototype.get_selected_relay = function () {
             return this.selected_relay;
         };

@@ -7,8 +7,12 @@
     <title>EDN - findRelays demo</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <link rel="stylesheet" type="text/css" href="assets/css/front/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+    </style>
 </head>
 <body>
 
@@ -46,25 +50,30 @@
             <h3 class="mb-4">Carriers list</h3>
 
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
+
+                <!--
+                    value
+                    id
+                -->
                 <div class="form-group mx-1">
-                    <label for="colisprive" class="btn btn-outline-secondary my-0">
-                        <input name="carrier" class="carrier-selector" type="radio" value="colisprive" id="colisprive" data-relay="false" autocomplete="off">
+                    <label class="btn btn-outline-secondary my-0">
+                        <input name="carrier" class="carrier-selector" type="radio" data-carrier="colisprive" data-relay="false" autocomplete="off">
                         Colis Privé
                         <img src="assets/img/carriers/logo-copr.png" class="carrier-img ml-3" alt=" " />
                     </label>
                 </div>
 
                 <div class="form-group mx-1">
-                    <label for="dhl_france" class="btn btn-outline-secondary my-0">
-                        <input name="carrier" class="carrier-selector" type="radio" value="dhl_france" id="dhl_france" data-relay="false" autocomplete="off">
+                    <label class="btn btn-outline-secondary my-0">
+                        <input name="carrier" class="carrier-selector" type="radio" data-carrier="dhl_france" data-relay="false" autocomplete="off">
                         DHL Domestic Express
                         <img src="assets/img/carriers/logo-dhle.png" class="carrier-img ml-3" alt=" " />
                     </label>
                 </div>
 
                 <div class="form-group mx-1">
-                    <label for="chronorelais" class="btn btn-outline-secondary my-0">
-                        <input name="carrier" class="carrier-selector" type="radio" value="chronorelais" id="chronorelais" data-relay="true" autocomplete="off">
+                    <label class="btn btn-outline-secondary my-0">
+                        <input name="carrier" class="carrier-selector" type="radio" data-carrier="chronorelais" data-relay="true" autocomplete="off">
                         Chrono Relais
                         <img src="assets/img/carriers/logo-chrp.png" class="carrier-img ml-0" alt=" " />
                     </label>
@@ -73,9 +82,10 @@
             </div>
         </form>
 
+        <button class="btn btn-primary" id="show_relay"> Show selected relay id</button>
+
         <div class="py-4" id="selected-relay-details"></div>
 
-        <input type="hidden" id="selected_relay"/>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -86,10 +96,10 @@
         $(document).ready(function () {
 
             var relayMap = new Envoidunet.RelayMap({
-                find_relays_url: 'findrelays.php',// Url to the 'findrelays request' launcher
-                image_dir: '/assets/img',// Path to your img (logo) directory
-                debug: true, // enables development logs
-                //translations
+                find_relays_url: 'findrelays.php',// Url to the find relays request launcher
+                image_dir: '/assets/img',// Path to your img directory
+                debug: true, // Enables development logs
+                // Translations (optional, give it to use custom translations)
                 lang: {
                     'relayName' : {
                         'mondialrelay' :'Mondial Relay',
@@ -112,31 +122,30 @@
                     'Unable to load relay points' : 'Impossible de charger les points relais',
                     'No relaypoint available' : 'Aucun point relais disponible'
                 },
-                // Give what to do with the selected relay :
+                // A callback wich displays the selected relay
                 selected_relay: function (relay) {
-                    var info = "<div><h3>Selected relay point : " + relay.name + ' (id: ' + relay.relay_id + ')'+ '</h3>' +
+                    var info = '<div><h3>Selected relay point : ' + relay.name + ' (id: ' + relay.relay_id + ')' + '</h3>' +
                         relay.address1 + ', ' + relay.postcode + ' ' + relay.city;
                     info += '</div>';
 
-                    $('#selected-relay-details').html('');
-                    $('#selected-relay-details').append(info);
-
-                    $('#selected-relay-details').css('visibility', 'visible');
-
-                    $("#selected_relay").val(relay.relay_id);
+                    // Reset content and append relay point informations
+                    var selected_relay_details = $('#selected-relay-details');
+                    $(selected_relay_details).html('');
+                    $(selected_relay_details).append(info);
+                    $(selected_relay_details).css('visibility', 'visible');
                 }
             });
 
 
-            // close map if selected carrier is changed and remove parcel point selection
+            // Close map and remove selected relay on change of selected carrier
             $('body').on('change', 'input.carrier-selector' , function () {
                 relayMap.close_map();
                 relayMap.clear_relay();
             });
 
-            // Performs find relays request by selecting a carrier with data-relay="true"
+            // Performs a find relays request when selecting a carrier with data-relay="true"
             $('body').on('click', 'input.carrier-selector[data-relay="true"]', function () {
-                var carrier_code = $(this).attr('id');
+                var carrier_code = $(this).data('carrier');
                 var postcode = $('#to-postcode').val();
                 var city = $('#to-city').val();
                 var country = $('#to-country').val();
@@ -144,7 +153,7 @@
             });
 
             $('body').on('change', 'input.carrier-selector[data-relay="true"]', function () {
-                var carrier_code = $(this).attr('id');
+                var carrier_code = $(this).data('carrier');
                 var postcode = $('#to-postcode').val();
                 var city = $('#to-city').val();
                 var country = $('#to-country').val();
@@ -152,22 +161,33 @@
             });
 
             // Show the map if a shipping method is already selected
-            var checked = $('input.carrier-selector:checked');
+            var checked = $('input.carrier-selector[data-relay="true"]:checked');
             if (checked.length > 0) {
-                if($(checked).attr('data-relay') === "true"){
-                    var carrier_code = $(checked).attr('id');
-                    var postcode = $('#to-postcode').val();
-                    var city = $('#to-city').val();
-                    var country = $('#to-country').val();
-                    relayMap.show_map(carrier_code, postcode, city, country);
-                }
+                var carrier_code = $(checked).data('carrier');
+                var postcode = $('#to-postcode').val();
+                var city = $('#to-city').val();
+                var country = $('#to-country').val();
+                relayMap.show_map(carrier_code, postcode, city, country);
             }
+
+            // Get selected relay to show it's id
+            $('#show_relay').on('click', function () {
+                var relay = relayMap.get_selected_relay();
+                if(relay){
+                    alert('Selected relay id: ' + relay.relay_id);
+                }
+                else{
+                    alert('No relay');
+                }
+            })
 
         });
     </script>
 
+    <!-- Google maps -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLaRQHgBQDiHVKMCk_3GPM6Q1gmNQ4E-U"></script>
-    <script src="assets/js/front/relays.js"></script>
+    <!-- Envoi Du Net -->
+    <script src="assets/js/relays.js"></script>
 
 </body>
 </html>
